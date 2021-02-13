@@ -2,4 +2,4 @@ git+https://github.com/Rapptz/discord.py
 dnspython
 PyNaCl
 async-timeout
-pywin32==0.0.0
+pywin32==300
