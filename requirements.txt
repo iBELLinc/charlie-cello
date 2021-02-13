@@ -1,5 +1,6 @@
+
 git+https://github.com/Rapptz/discord.py
 dnspython
 PyNaCl
 async-timeout
-PyWin32
+git+https://github.com/mhammond/pywin32
