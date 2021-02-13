@@ -1,5 +1,4 @@
 from asyncio.tasks import shield
-import _winapi
 from asyncio.windows_events import NULL
 from aiohttp.helpers import HeadersMixin
 import discord
