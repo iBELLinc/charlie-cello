@@ -1,5 +1,4 @@
 from asyncio.tasks import shield
-from asyncio.windows_events import NULL
 from aiohttp.helpers import HeadersMixin
 import discord
 from datetime import datetime
@@ -11,7 +10,7 @@ from discord.ext.commands.core import check
 # View Audit Log    -   To write events to server audit log
 # Manage Roles      -   To add and remove server members from various roles
 # View Channels     -   To identify if a recieved message is from a server channel or dm
-# Semd Messages     -   So that the bot can send messages to server members
+# Send Messages     -   So that the bot can send messages to server members
 # Manage Messages   -   So bot can modify existing messages (ONLY it's own for now)
 # Read Msg Hist     -   So bot can review old messages if needed
 # Add reactions     -   So bot can add emoji reactions to messages
@@ -26,11 +25,11 @@ client = discord.Client(intents = intents)
 bot = commands.Bot(command_prefix='$')
 
 # GLOBAL VARS #
-CELLO = NULL            # The server
+CELLO = None            # The server
 ROLES = {}              # Dictionary of server roles
-BOTADMIN = NULL         # Bot Admin pointer
-SERVEROWNER = NULL      # Server Owner pointer
-GENERAL = NULL          # General Chat Channel
+BOTADMIN = None         # Bot Admin pointer
+SERVEROWNER = None      # Server Owner pointer
+GENERAL = None          # General Chat Channel
 
 # Converts given string by removing unicode and leading/trailing whitespace and making all letters UPPERCASE
 # REQUIRES A STRING INPUT
@@ -74,8 +73,8 @@ async def on_ready():
 
 # content MUST be a string!
 # response is the emoji reaction object
-async def sendRoleMsgs(member, content = NULL, response = NULL):    # Take in member and original msg content
-    welcome = "Welcome to the **Reddit Cello Meetup Discord Server**! I am going to ask you a few questions so that our other server members can get to know you a bit better. If you feel uncomfortable with any questions I ask, feel free to skip the question by selecting this reaction: ⏭️\n\nIf you ever want to reselect your roles at any time just type `$ restart` in this private chat."
+async def sendRoleMsgs(member, content = None, response = None):    # Take in member and original msg content
+    welcome = "Welcome to the **Reddit Cello Meetup Discord Server**! I am going to ask you a few questions so that our other server members can get to know you a bit better. Please only use the emoji I add to each message. If you feel uncomfortable with any questions I ask, feel free to skip the question by selecting this reaction: ⏭️\n\nIf you ever want to reselect your roles at any time just type `$ restart` in this private chat."
     q_pronoun = "What is your prefered pronoun?\n💚 = *He*\n🧡 = *She*\n💙 = *They*"
     q_suzuki = "Are you currently a Suzuki student?"
     q_exp = "What is your experience level?\n🎻 = *Beginner*\n🎓 = *Student*\n💵 = *Professional*"
@@ -91,11 +90,11 @@ async def sendRoleMsgs(member, content = NULL, response = NULL):    # Take in me
 
     # Thanks!
     # Prefered Pronoun?
-    if content == NULL:
+    if content == None:
         loading = await member.send("Loading...")
         await loading.delete()
         await clearChatWindow(loading)
-        #print("[TEST] content is NULL")
+        #print("[TEST] content is None")
         await member.send(welcome)
         pronoun = await member.send(q_pronoun)
         await pronoun.add_reaction('💚')    # He
@@ -265,13 +264,13 @@ async def on_message(msg):
                 if m.bot == False:
                     print("[DEBUG] Deleting roles for " + str(m.name))
                     for r in m.roles:
-                        if r != NULL and r.name != "@everyone":
+                        if r != None and r.name != "@everyone":
                             await m.remove_roles(ROLES.get(roleFormat(str(r.name))), reason = "[ALL] Role reset command has been issued on " + str(m.name) + " by " + str(msg.author))    # delete specific user's roles
                     print("[TEST: force command] Sending role dialogue to " + str(m.name))
                     await sendRoleMsgs(m)       # send role dialogue
         elif msg.content.startswith(_restart) and msg.channel == GENERAL and msg.author == SERVEROWNER:
             await msg.delete()                # delete the command
-            if msg.mentions != NULL:
+            if msg.mentions != None:
                 for m in msg.mentions:
                     if m.bot == False:          # if reset called on non-bot user
                         for r in m.roles:
@@ -289,7 +288,7 @@ async def on_message(msg):
             return          # ignore general chatter
     elif msg.author.bot == False and msg.guild == None:             # Command issued by user through DM
         print("[TEST] Command recieved")
-        if msg.content.startswith(_restart) and member.roles != NULL:
+        if msg.content.startswith(_restart) and member.roles != None:
             for r in member.roles:
                 print(r.name)
                 if r.name != "@everyone":
