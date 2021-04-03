@@ -17,7 +17,7 @@ from discord.ext.commands.core import check
 #
 ############################################################
 
-TOKEN = 'ODA3NTI3MDIxMjk4NzEyNTc3.YB5SJQ.PeZM1VOl36gMJT3z_Lzv4fafkfI'
+TOKEN = 'ODA3NTI3MDIxMjk4NzEyNTc3.YB5SJQ.YMXZfJl-T0hifYSeXxsWN088fwk'
 intents = intents = discord.Intents.default()
 intents.members = True
 intents.reactions = True
