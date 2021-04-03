@@ -76,7 +76,7 @@ async def on_ready():
 async def sendRoleMsgs(member, content = None, response = None):    # Take in member and original msg content
     welcome = "Welcome to the **Reddit Cello Meetup Discord Server**! I am going to ask you a few questions so that our other server members can get to know you a bit better. Please only use the emoji I add to each message. If you feel uncomfortable with any questions I ask, feel free to skip the question by selecting this reaction: ⏭️\n\nIf you ever want to reselect your roles at any time just type `$ restart` in this private chat."
     q_pronoun = "What is your prefered pronoun?\n💚 = *He*\n🧡 = *She*\n💙 = *They*"
-    q_suzuki = "Are you currently a Suzuki student?"
+    q_suzuki = "Have you used/do you use the Suzuki method?"
     q_exp = "What is your experience level?\n🎻 = *Beginner*\n🎓 = *Student*\n💵 = *Professional*"
     q_rules = "Have you read the server rules?"
     q_teach = "Are you a cello teacher?"
