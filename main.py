@@ -1,4 +1,5 @@
 from asyncio.tasks import shield
+from typing import get_type_hints
 from aiohttp.helpers import HeadersMixin
 import discord
 from datetime import datetime
@@ -77,7 +78,8 @@ async def sendRoleMsgs(member, content = None, response = None):    # Take in me
     welcome = "Welcome to the **Reddit Cello Meetup Discord Server**! I am going to ask you a few questions so that our other server members can get to know you a bit better. Please only use the emoji I add to each message. If you feel uncomfortable with any questions I ask, feel free to skip the question by selecting this reaction: ⏭️\n\nIf you ever want to reselect your roles at any time just type `$ restart` in this private chat."
     q_pronoun = "What is your prefered pronoun?\n💚 = *He*\n🧡 = *She*\n💙 = *They*"
     q_suzuki = "Have you used/do you use the Suzuki method?"
-    q_exp = "What is your experience level?\n🎻 = *Beginner*\n🎓 = *Student*\n💵 = *Professional*"
+    q_exp = "What is your experience level?\n🎓 = *Student*\n🎻 = *Amateur*\n💵 = *Professional*"
+    q_skill = "What is your skill level?\n🥉 = *Beginner*\n🥈 = *Intermediate*\n🥇 = *Advanced*"
     q_rules = "Have you read the server rules?"
     q_teach = "Are you a cello teacher?"
     q_thx = "Thank you for taking the time to answer these quesitons and review the server rules. Feel free to reach out on the server if you need anything else. Happy cello-ing!"
@@ -137,13 +139,38 @@ async def sendRoleMsgs(member, content = None, response = None):    # Take in me
             await rules.add_reaction('✔️')      # Yes
 
     # Teacher?
+    elif q_skill in content:
+        if response == '🥉':
+            await member.add_roles(ROLES.get("BEGINNER"), reason = member.name + " opt in to role.", atomic = True)
+            c = True
+        elif response == '🥈':
+            await member.add_roles(ROLES.get("INTERMEDIATE"), reason = member.name + " opt in to role.", atomic = True)
+            c = True
+        elif response == '🥇':
+            await member.add_roles(ROLES.get("ADVANCED"), reason = member.name + " opt in to role.", atomic = True)
+            c = True
+        elif response == '⏭️':
+            #print([TEST] d_skip)
+            c = True
+
+        else:
+            await member.send(q_error)
+            await BOTADMIN.send(a_NOTIFY)       # send error report to Ian via dm
+
+        if c == True:
+            teacher = await member.send(q_teach)
+            await teacher.add_reaction('❌')    # No
+            await teacher.add_reaction('✔️')    # Yes
+            await teacher.add_reaction('⏭️')    # Skip
+
+    # Skill Level?
     elif q_exp in content:
         #print("[TEST] q_exp in content")
-        if response == '🎻':
-            await member.add_roles(ROLES.get("HOBBYIST"), reason = member.name + " opt in to role.", atomic = True)
-            c = True
-        elif response == '🎓':
+        if response == '🎓':
             await member.add_roles(ROLES.get("STUDENT"), reason = member.name + " opt in to role.", atomic = True)
+            c = True
+        elif response == '🎻':
+            await member.add_roles(ROLES.get("AMATEUR"), reason = member.name + " opt in to role.", atomic = True)
             c = True
         elif response == '💵':
             await member.add_roles(ROLES.get("PROFESSIONAL"), reason = member.name + " opt in to role.", atomic = True)
@@ -156,12 +183,13 @@ async def sendRoleMsgs(member, content = None, response = None):    # Take in me
             await BOTADMIN.send(a_NOTIFY)       # send error report to Ian via dm
 
         if c == True:
-            teacher = await member.send(q_teach)
-            await teacher.add_reaction('❌')    # No
-            await teacher.add_reaction('✔️')    # Yes
-            await teacher.add_reaction('⏭️')    # Skip
+            skill = await member.send(q_skill)
+            await skill.add_reaction('🥉')    # Beginner
+            await skill.add_reaction('🥈')    # Intermediate
+            await skill.add_reaction('🥇')    # Advanced
+            await skill.add_reaction('⏭️')    # Skip
 
-    # Exp Level?
+    # Experience Level?
     elif q_suzuki in content:
         #print("[TEST] q_suzuki in content")
         if response == '✔️':
@@ -179,8 +207,8 @@ async def sendRoleMsgs(member, content = None, response = None):    # Take in me
 
         if c == True:
             exp = await member.send(q_exp)
-            await exp.add_reaction('🎻')    # Hobby
             await exp.add_reaction('🎓')    # Student
+            await exp.add_reaction('🎻')    # Amateur
             await exp.add_reaction('💵')    # Professional
             await exp.add_reaction('⏭️')    # Skip
 
