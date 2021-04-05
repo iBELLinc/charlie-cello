@@ -170,10 +170,10 @@ async def sendRoleMsgs(member, content = None, response = None):    # Take in me
             await member.add_roles(ROLES.get("STUDENT"), reason = member.name + " opt in to role.", atomic = True)
             c = True
         elif response == '🎻':
-            await member.add_roles(ROLES.get("AMATEUR"), reason = member.name + " opt in to role.", atomic = True)
+            await member.add_roles(ROLES.get("AMATEUR MUSICIAN"), reason = member.name + " opt in to role.", atomic = True)
             c = True
         elif response == '💵':
-            await member.add_roles(ROLES.get("PROFESSIONAL"), reason = member.name + " opt in to role.", atomic = True)
+            await member.add_roles(ROLES.get("PROFESSIONAL MUSICIAN"), reason = member.name + " opt in to role.", atomic = True)
             c = True
         elif response == '⏭️':
             #print([TEST] d_skip)
@@ -216,13 +216,13 @@ async def sendRoleMsgs(member, content = None, response = None):    # Take in me
     elif q_pronoun in content:
         #print("[TEST] q_pronoun in content")
         if response == '💚':
-            await member.add_roles(ROLES.get("HE/HIM"), reason = member.name + " opt in to role.", atomic = True)
+            await member.add_roles(ROLES.get("HE/HIM/HIS"), reason = member.name + " opt in to role.", atomic = True)
             c = True
         elif response == '🧡':
-            await member.add_roles(ROLES.get("SHE/HER"), reason = member.name + " opt in to role.", atomic = True)
+            await member.add_roles(ROLES.get("SHE/HER/HERS"), reason = member.name + " opt in to role.", atomic = True)
             c = True
         elif response == '💙':
-            await member.add_roles(ROLES.get("THEY/THEM"), reason = member.name + " opt in to role.", atomic = True)
+            await member.add_roles(ROLES.get("THEY/THEM/THEIR"), reason = member.name + " opt in to role.", atomic = True)
             c = True
         elif response == '⏭️':
             #print([TEST] d_skip)
