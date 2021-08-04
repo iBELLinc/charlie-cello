@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\ibell\AppData\Local\Programs\Python\Python39\lib\site-packages\discord\client.py", line 333, in _run_event
+    await coro(*args, **kwargs)
+  File "c:\Users\ibell\Documents\Reddit Cello Discord BOT\main.py", line 326, in on_message
+    await member.remove_roles(ROLES.get(roleFormat(str(r.name))), reason = msg.author.name + " requested to reset their roles.")
+  File "C:\Users\ibell\AppData\Local\Programs\Python\Python39\lib\site-packages\discord\member.py", line 708, in remove_roles
+    await req(guild_id, user_id, role.id, reason=reason)
+  File "C:\Users\ibell\AppData\Local\Programs\Python\Python39\lib\site-packages\discord\http.py", line 241, in request
+    raise Forbidden(r, data)
+discord.errors.Forbidden: 403 Forbidden (error code: 50013): Missing Permissions
