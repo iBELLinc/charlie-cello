@@ -10,6 +10,9 @@ from role_dialogue import sendRoleMsgs
 from myUtils import UserToMember, roleFormat
 #from private import TOKEN, bot_admin, guild_id, bot_channel
 import private
+import avatar_update
+from datetime import datetime, timedelta
+from date_time_event import Untiltime
 
 ############################################################
 #              BOT PERMISSIONS
@@ -28,22 +31,8 @@ intents.members = True
 intents.reactions = True
 private.CLIENT = client = discord.Client(intents = intents)
 bot = commands.Bot(command_prefix='$')
-
-# ### GLOBAL VARS ###
-# global CLIENT           # The Bot
-# global GUILD            # The Server
-# global BOTADMIN         # The Bot Admin
-# global SERVEROWNER      # The Owner of the Server
-# global BOT_CHANNEL      # The channel that the bot speaks in
-# global ROLES            # All server roles
-
-# CLIENT = client
-# GUILD = None
-# BOTADMIN = None
-# SERVEROWNER = None
-# BOT_CHANNEL = None
-# ROLES = {}
-# ###################
+nextDay = datetime.now() + timedelta(days = 1)
+currentDate = datetime.date
 
 #############################
 #
@@ -68,14 +57,6 @@ async def on_ready():
     # Creates dictionary of all server roles
     for role in private.GUILD.roles:
         private.ROLES[roleFormat(str(role.name))] = role
-
-    ### Testing for ROLES dictionary
-    #print(ROLES)
-    #KNIGHT = ROLES.get("KNIGHT")
-    #print(str(KNIGHT.name))
-    #print(str(KNIGHT.permissions))
-
-    #print("[DEBUG] Roles Loaded")
 
 #############################
 #
@@ -122,5 +103,20 @@ async def on_raw_reaction_add(payload):
 async def on_message(msg):
     if (not msg.author.bot and msg.content.startswith('$') and msg.guild == None) :
         await decipherCommand(client, private.GUILD, msg, private.ROLES)
+
+#############################
+#
+#       DAILTY AVATAR UPDATE CHECK
+#
+# Event-condition: A new day starts
+# Post-condition: Bot avatar is updated to reflect specific holidays
+#
+#############################
+@Untiltime(dateOrtime=nextDay)
+async def updateDay():
+    print("[Debug] : Daily avatar update check.")
+    nextDay = datetime.now() + timedelta(days = 1)
+    avatar_update.checkHoliday(currentDate)
+# !!    Possibly add a message to the bot channel to recognize the holiday that Charlie is dressed up for
 
 client.run(private.TOKEN)

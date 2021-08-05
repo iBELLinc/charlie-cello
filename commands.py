@@ -16,6 +16,7 @@ global rolesList
 rolesList = {}
 
 # COMMAND HANDLER: CLEAR
+# Clears bot messages from issuers chat window
 async def clear(client, msg) :
     await clearChatWindow(client, msg)
 
@@ -39,7 +40,8 @@ async def forceDialogueAll(client, msg) :
 ##        await restart(client, m, reason)
 
 # COMMAND HANDLER: FORCE DIALOGUE
-# Admin command to restart dialogue on a specific user
+# Pre-Condition: Admin sends $forcedialogue command with a username including discord id
+# Post-Condition: Restarts the role dialogue with specified user
 async def forceDialogue(client, msg) :
     reason = str(msg.author.name) + " issued forcedialogue command on this user."
     try:
@@ -64,10 +66,14 @@ async def post(msg) :
     await private.BOT_CHANNEL.send(msg.content.replace(POST, ''))
     await msg.author.send("Update has been posted to " + private.BOT_CHANNEL.name + " 😁")
 
+# Pre-Condition: Command was verified to be incorrect or cast by non-admin user
+# Post-Condition: Sends a silent warning to the bot admin containing the command that was issued illegally by non-admin user
 async def illegalCommandUsage(msg) :
     print("[WARNING] Admin command issued by non-admin user " + str(msg.author.name) + " silent warning sent to BOT ADMIN")
     await private.BOTADMIN.send("[WARNING] " + str(datetime.now()) + " " + str(msg.author.name) + " attempted to issue command \n#####\n" + str(msg.content) + "\n#####")
 
+# Pre-Condition: Takes a membertype to verify if they have admin priviledges on the server
+# Post-Condition: Returns true if user is admin or false if user is not admin
 async def isAdmin(member):
     for r in member.roles:
         if (r.name == "admin"): return True

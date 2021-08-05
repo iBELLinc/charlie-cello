@@ -11,6 +11,7 @@ async def sendRoleMsgs(member, client, content = None, response = None):    # Ta
     q_skill = "What is your skill level?\n🥉 = *Beginner*\n🥈 = *Intermediate*\n🥇 = *Advanced*"
     q_rules = "Have you read the server rules?"
     q_teach = "Are you a cello teacher?"
+    q_location = "What part of the world do you live in?\n🌍 = *Europe/Africa*\n🌏 = *Asia/Australia*\n🌎 = *North/South America*"
     q_thx = "Thank you for taking the time to answer these quesitons and review the server rules. Feel free to reach out on the server if you need anything else. Happy cello-ing!"
     q_error = "I am terribly sorry. Something has gone wrong with my programming. I am letting the server admin know so that they can take care of this issue for you. You should receive a response from them within 48 hours. Otherwise please let someone know on the server."
     a_NOTIFY = "[ERROR] in `async def sendRoleMsgs(member, content)` \nrecieved response = " + str(response) + "\n" + member.name + " is awaiting a response."
@@ -119,6 +120,32 @@ async def sendRoleMsgs(member, client, content = None, response = None):    # Ta
             await skill.add_reaction('⏭️')    # Skip
 
     # Experience Level?
+    elif q_location in content:
+        #print("[TEST] q_location in content")
+        if response == '🌍':
+            await member.add_roles(private.ROLES.get("EUROPE-AFRICA"), reason = member.name + " opt in to role.", atomic = True)
+            c = True
+        elif response == '🌏':
+            await member.add_roles(private.ROLES.get("ASIA-AUSTRALIA"), reason = member.name + " opt in to role.", atomic = True)
+            c = True
+        elif response == '🌎':
+            await member.add_roles(private.ROLES.get("AMERICAS"), reason = member.name + " opt in to role.", atomic = True)
+            c = True
+        elif response == '⏭️':
+            #print([TEST] d_skip)
+            c = True
+        else:
+            await member.send(q_error)
+            await private.BOTADMIN.send(a_NOTIFY)       # send error report to Ian via dm
+
+        if c == True:
+            exp = await member.send(q_exp)
+            await exp.add_reaction('🎓')    # Student
+            await exp.add_reaction('🎻')    # Amateur
+            await exp.add_reaction('💵')    # Professional
+            await exp.add_reaction('⏭️')    # Skip
+
+        # Location?
     elif q_suzuki in content:
         #print("[TEST] q_suzuki in content")
         if response == '✔️':
@@ -135,10 +162,10 @@ async def sendRoleMsgs(member, client, content = None, response = None):    # Ta
             await private.BOTADMIN.send(a_NOTIFY)       # send error report to Ian via dm
 
         if c == True:
-            exp = await member.send(q_exp)
-            await exp.add_reaction('🎓')    # Student
-            await exp.add_reaction('🎻')    # Amateur
-            await exp.add_reaction('💵')    # Professional
+            exp = await member.send(q_location)
+            await exp.add_reaction('🌍')    # Europe/Africa
+            await exp.add_reaction('🌏')    # Asia/Australia
+            await exp.add_reaction('🌎')    # Americas
             await exp.add_reaction('⏭️')    # Skip
 
     # Suzuki?
