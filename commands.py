@@ -24,7 +24,7 @@ async def clear(client, msg) :
 # Precondition: requires a member object - NOT USER
 async def restart(client, member, reason = "This user issued the reset command to reselect their roles.") :
     for m in client.get_all_members():
-        if (str(m) == str(member)):
+        if (str(m) == str(member) and member.bot == False):
             #print("[DEBUG] Found User " + m.name)
             await clearMemberRoles(client, m, reason)
             await sendRoleMsgs(m, client)
@@ -37,7 +37,7 @@ async def forceDialogueAll(client, msg) :
     mlist = list(dict.fromkeys(client.get_all_members()))       # create list of members and remove duplicates
     for m in mlist:
         print("[DEBUG] Running $reset command on user " + m.name + " ~command issued by " + msg.author.name + "~")
-##        await restart(client, m, reason)
+        await restart(client, m, reason)
 
 # COMMAND HANDLER: FORCE DIALOGUE
 # Pre-Condition: Admin sends $forcedialogue command with a username including discord id
